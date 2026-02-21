@@ -1,0 +1,70 @@
+---
+title: "ABAP Code Snippet: Reading VIM Invoice Attachments"
+description: "Learn how to programmatically access and process invoice attachments in OpenText VIM using ABAP"
+pubDate: 2026-02-21
+author: sneha-muralidharan
+category: abap-snippets
+tags: [ABAP, VIM, Invoice Processing, Code]
+status: draft
+---
+
+# Reading VIM Invoice Attachments
+
+When working with OpenText VIM, you often need to access invoice attachments programmatically. Here's how to do it.
+
+## The Basic Approach
+
+```abap
+DATA: ls_doc_header TYPE /OPT/VIM_DOC_HDR.
+DATA: lt_attachments TYPE /OPT/VIM_TT_ATTACHMENT.
+
+" Get document header
+CALL FUNCTION '/OPT/VIM_GET_DOC_HEADER'
+  EXPORTING
+    doc_id = iv_doc_id
+  IMPORTING
+    doc_header = ls_doc_header.
+
+" Get attachments
+CALL FUNCTION '/OPT/VIM_GET_ATTACHMENTS'
+  EXPORTING
+    doc_id = iv_doc_id
+  IMPORTING
+    attachments = lt_attachments.
+```
+
+## Processing Each Attachment
+
+```abap
+LOOP AT lt_attachments INTO DATA(ls_attachment).
+  " Download to application server
+  CALL FUNCTION '/OPT/VIM_READ_ATTACHMENT'
+    EXPORTING
+      attachment_id = ls_attachment-attachment_id
+      doc_id = iv_doc_id
+    IMPORTING
+      content = lv_content
+      mime_type = lv_mime_type.
+    
+  " Process based on type
+  IF lv_mime_type = 'application/pdf'.
+    " Handle PDF
+  ENDIF.
+ENDLOOP.
+```
+
+## Key Points
+
+1. Always check `ls_doc_header-doc_type` before processing
+2. Use the `/OPT/VIM_GET_ATTACHMENTS` function module
+3. Attachments are stored as binary content
+
+> **Pro Tip:** For high-volume processing, consider using background jobs with `SCSM_JOB_SUBMIT`.
+
+## Next Steps
+
+In our next post, we'll cover how to create custom VIM workflows for approval automation.
+
+---
+
+*Need help with your VIM implementation? [Contact us](/contact) for consultation.*
