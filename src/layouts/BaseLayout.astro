@@ -8,16 +8,16 @@ const { title, description = "SAP & VIM Development Blog - ABAP code snippets an
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content={description}>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <title>{title} | SAP VIM Dev Blog</title>
+  <title>{title} | sapvim.blog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   
   <!-- Dark mode: prevent flash -->
   <script is:inline>
@@ -25,135 +25,103 @@ const { title, description = "SAP & VIM Development Blog - ABAP code snippets an
       const stored = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const theme = stored || (prefersDark ? 'dark' : 'light');
-      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
     })();
   </script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased transition-colors duration-200">
+<body class="bg-primary text-text-primary font-sans antialiased min-h-screen transition-colors">
+  <!-- Noise texture overlay -->
+  <div class="fixed inset-0 opacity-[0.015] pointer-events-none z-[9999] dark:opacity-[0.02]" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E&quot;);"></div>
+
   <!-- Navigation -->
-  <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white sticky top-0 z-50">
-    <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-            <span class="font-mono font-bold text-sm text-white">VI</span>
-          </div>
-          <span class="font-semibold text-lg tracking-tight hidden sm:block">SAP VIM Dev</span>
-        </a>
-        
-        <!-- Nav Links - Desktop -->
-        <div class="hidden md:flex items-center gap-6">
-          <a href="/" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Home</a>
-          <a href="/blog" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Articles</a>
-          <a href="/services" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Services</a>
-          
-          <!-- Dark Mode Toggle -->
-          <button id="theme-toggle" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
-            <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
-            </svg>
-            <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
-            </svg>
-          </button>
-          
-          <a href="/contact" class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition-colors shadow-sm">
-            Get Support
-          </a>
-        </div>
-        
-        <!-- Mobile: Theme Toggle + Menu -->
-        <div class="flex items-center gap-2 md:hidden">
-          <button id="theme-toggle-mobile" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
-            <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
-            </svg>
-            <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
-            </svg>
-          </button>
-          
-          <button id="mobile-menu-btn" class="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
-        </div>
+  <nav class="sticky top-0 z-50 bg-nav backdrop-blur-xl saturate-[180%] border-b border-border transition-colors">
+    <div class="max-w-[1120px] mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <span class="font-mono font-semibold text-lg text-text-primary">sapvim.blog</span>
+      </a>
+      
+      <!-- Nav Links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/blog" class="text-sm font-medium text-text-secondary hover:text-accent transition-colors">Articles</a>
+        <a href="/services" class="text-sm font-medium text-text-secondary hover:text-accent transition-colors">Services</a>
       </div>
       
-      <!-- Mobile menu -->
-      <div id="mobile-menu" class="hidden md:hidden pb-4">
-        <div class="flex flex-col gap-4">
-          <a href="/" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Home</a>
-          <a href="/blog" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Articles</a>
-          <a href="/services" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Services</a>
-          <a href="/contact" class="text-sm font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-500">Get Support</a>
-        </div>
+      <!-- Right side -->
+      <div class="flex items-center gap-4">
+        <!-- Dark Mode Toggle -->
+        <button id="theme-toggle" class="p-2 rounded-lg text-text-tertiary hover:text-text-primary hover:bg-tag-bg transition-colors" aria-label="Toggle dark mode">
+          <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+          </svg>
+          <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+          </svg>
+        </button>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-text-secondary hover:text-text-primary">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
       </div>
-    </nav>
-  </header>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-border">
+      <div class="max-w-[1120px] mx-auto px-6 py-4 flex flex-col gap-4">
+        <a href="/blog" class="text-sm font-medium text-text-secondary">Articles</a>
+        <a href="/services" class="text-sm font-medium text-text-secondary">Services</a>
+      </div>
+    </div>
+  </nav>
 
   <main class="min-h-screen">
     <slot />
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 text-slate-400 py-12">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <footer class="bg-secondary dark:bg-dark-secondary border-t border-border py-12">
+    <div class="max-w-[1120px] mx-auto px-6">
       <div class="grid md:grid-cols-4 gap-8">
         <div class="col-span-2">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <span class="font-mono font-bold text-sm text-white">VI</span>
-            </div>
-            <span class="font-semibold text-white">SAP VIM Dev Blog</span>
-          </div>
-          <p class="text-sm text-slate-400 max-w-md">
+          <a href="/" class="font-mono font-semibold text-lg text-text-primary mb-4 block">sapvim.blog</a>
+          <p class="text-sm text-text-secondary max-w-md">
             Technical resources for SAP practitioners. ABAP code snippets, VIM engineering guides, and practical troubleshooting from industry experts.
           </p>
         </div>
         <div>
-          <h4 class="font-semibold text-white mb-4">Resources</h4>
+          <h4 class="font-semibold text-text-primary mb-4">Resources</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="/blog" class="hover:text-cyan-400 transition-colors">Articles</a></li>
-            <li><a href="/services" class="hover:text-cyan-400 transition-colors">Services</a></li>
-            <li><a href="/contact" class="hover:text-cyan-400 transition-colors">Contact</a></li>
+            <li><a href="/blog" class="text-text-secondary hover:text-accent transition-colors">Articles</a></li>
+            <li><a href="/services" class="text-text-secondary hover:text-accent transition-colors">Services</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold text-white mb-4">Connect</h4>
+          <h4 class="font-semibold text-text-primary mb-4">Connect</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="#" class="hover:text-cyan-400 transition-colors">LinkedIn</a></li>
-            <li><a href="#" class="hover:text-cyan-400 transition-colors">Twitter</a></li>
-            <li><a href="mailto:hello@sapvim.blog" class="hover:text-cyan-400 transition-colors">Email</a></li>
+            <li><a href="mailto:hello@sapvim.blog" class="text-text-secondary hover:text-accent transition-colors">Email</a></li>
           </ul>
         </div>
       </div>
-      <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm">
-        <p>&copy; 2026 SAP VIM Development Blog. Built for SAP practitioners.</p>
+      <div class="border-t border-border mt-8 pt-8 text-center text-sm text-text-tertiary">
+        <p>&copy; 2026 sapvim.blog</p>
       </div>
     </div>
   </footer>
 
   <script>
     function setTheme(theme: string) {
-      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('theme', theme);
     }
     
-    // Theme toggle handlers
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.contains('dark');
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       setTheme(isDark ? 'light' : 'dark');
     });
     
-    document.getElementById('theme-toggle-mobile')?.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      setTheme(isDark ? 'light' : 'dark');
-    });
-    
-    // Mobile menu
     document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
       document.getElementById('mobile-menu')?.classList.toggle('hidden');
     });
@@ -162,23 +130,53 @@ const { title, description = "SAP & VIM Development Blog - ABAP code snippets an
 </html>
 
 <style is:global>
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-  code, pre, .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-code: #1e293b;
+    --bg-nav: rgba(255,255,255,0.85);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --accent-subtle: #eff6ff;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-card: #ffffff;
+    --border: #e2e8f0;
+    --tag-bg: #f1f5f9;
+    --tag-text: #475569;
   }
   
-  /* Code block styling */
-  pre {
-    @apply rounded-xl overflow-hidden shadow-lg my-6;
-  }
-  pre code {
-    @apply block p-4 text-sm overflow-x-auto;
+  [data-theme="dark"] {
+    --bg-primary: #0b1120;
+    --bg-secondary: #0f172a;
+    --bg-card: #131c2e;
+    --bg-code: #0d1424;
+    --bg-nav: rgba(11,17,32,0.88);
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-tertiary: #64748b;
+    --accent: #60a5fa;
+    --accent-hover: #93bbfd;
+    --accent-subtle: rgba(37,99,235,0.1);
+    --bg-primary: #0b1120;
+    --bg-secondary: #0f172a;
+    --bg-card: #131c2e;
+    --border: #1e293b;
+    --tag-bg: #1e293b;
+    --tag-text: #94a3b8;
   }
   
-  /* Custom code header */
-  .code-header {
-    @apply flex items-center justify-between px-4 py-2 bg-slate-800 dark:bg-slate-950 border-b border-slate-700 text-xs text-slate-400 font-mono;
+  html { font-size: 17px; }
+  body { 
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
   }
+  code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; }
 </style>

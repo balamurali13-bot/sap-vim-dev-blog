@@ -6,89 +6,77 @@ const posts = await getCollection('blog');
 const publishedPosts = posts.filter(p => p.data.status === 'published').sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const categoryColors: Record<string, string> = {
-  'abap-snippets': 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-  'vim-enhancements': 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400',
-  'workflow': 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
-  'fi-mm': 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
-  'troubleshooting': 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-  'performance': 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400',
-  'best-practices': 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400',
+  'abap-snippets': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  'vim-enhancements': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  'workflow': 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+  'fi-mm': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  'troubleshooting': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  'performance': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
+  'best-practices': 'bg-tag-bg text-tag-text',
 };
 ---
 
 <BaseLayout title="Articles">
   <!-- Header -->
-  <section class="bg-slate-900 dark:bg-slate-950 text-white py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <h1 class="text-4xl sm:text-5xl font-bold mb-4">Articles</h1>
-        <p class="text-lg text-slate-300">
-          Technical guides, code snippets, and best practices for SAP practitioners.
-        </p>
-      </div>
+  <section class="bg-gradient-to-b from-secondary to-primary dark:from-dark-secondary dark:to-dark-primary py-16">
+    <div class="max-w-[1120px] mx-auto px-6">
+      <h1 class="text-4xl font-bold text-text-primary mb-3 font-serif">Articles</h1>
+      <p class="text-lg text-text-secondary">
+        Technical guides, code snippets, and best practices for SAP practitioners.
+      </p>
     </div>
   </section>
 
   <!-- Posts Grid -->
   <section class="py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[1120px] mx-auto px-6">
       {publishedPosts.length === 0 ? (
         <div class="text-center py-12">
-          <p class="text-slate-500 dark:text-slate-400 text-lg">No articles yet. Check back soon!</p>
+          <p class="text-text-secondary text-lg">No articles yet. Check back soon!</p>
         </div>
       ) : (
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {publishedPosts.map(post => (
-            <article class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl hover:border-cyan-200 dark:hover:border-cyan-600 transition-all group">
-              <!-- Card Header -->
-              <div class="p-6 pb-4">
-                <div class="flex items-center gap-3 mb-4">
-                  <span class={`px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wide ${categoryColors[post.data.category] || 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'}`}>
+            <a href={`/blog/${post.slug}`} class="group bg-card dark:bg-dark-card rounded-xl border border-border hover:border-accent hover:shadow-md transition-all">
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class={`px-2 py-1 rounded-md text-xs font-medium ${categoryColors[post.data.category] || 'bg-tag-bg text-tag-text'}`}>
                     {post.data.category.replace('-', ' ')}
                   </span>
                   {post.data.featured && (
-                    <span class="px-2 py-1 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold">
+                    <span class="px-2 py-1 rounded-md bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-medium">
                       ★ Featured
                     </span>
                   )}
                 </div>
                 
-                <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
-                  <a href={`/blog/${post.slug}`}>
-                    {post.data.title}
-                  </a>
+                <h2 class="text-lg font-semibold text-text-primary mb-2 group-hover:text-accent transition-colors line-clamp-2 font-serif">
+                  {post.data.title}
                 </h2>
                 
-                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-3">
+                <p class="text-sm text-text-secondary mb-4 line-clamp-3">
                   {post.data.description}
                 </p>
-              </div>
-              
-              <!-- Card Footer -->
-              <div class="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                    {post.data.author.charAt(0).toUpperCase()}
+                
+                <div class="flex items-center justify-between text-xs text-text-tertiary mb-4">
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-white text-xs font-bold">
+                      {post.data.author.charAt(0).toUpperCase()}
+                    </div>
+                    <span>{post.data.author}</span>
                   </div>
-                  <div>
-                    <p class="text-sm font-medium text-slate-700 dark:text-slate-300">{post.data.author}</p>
-                    <p class="text-xs text-slate-500">{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                  <span>{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                </div>
+                
+                {post.data.tags && post.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2 pt-4 border-t border-border">
+                    {post.data.tags.slice(0, 4).map(tag => (
+                      <span class="px-2 py-1 rounded-md bg-tag-bg text-tag-text text-xs">#{tag}</span>
+                    ))}
                   </div>
-                </div>
-                <a href={`/blog/${post.slug}`} class="text-cyan-600 dark:text-cyan-400 font-semibold text-sm hover:underline">
-                  Read →
-                </a>
+                )}
               </div>
-              
-              <!-- Tags -->
-              {post.data.tags && post.data.tags.length > 0 && (
-                <div class="px-6 pb-4 flex flex-wrap gap-2">
-                  {post.data.tags.slice(0, 3).map(tag => (
-                    <span class="text-xs text-slate-500 dark:text-slate-500">#{tag}</span>
-                  ))}
-                </div>
-              )}
-            </article>
+            </a>
           ))}
         </div>
       )}

@@ -80,18 +80,36 @@ const categoryColors: Record<string, string> = {
               </h2>
               <p class="text-slate-600 dark:text-slate-400 mb-6">{featuredPost.data.description}</p>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-slate-500 dark:text-slate-400">By {featuredPost.data.author}</span>
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                    {featuredPost.data.author.split('-').map(w => w.charAt(0).toUpperCase()).join('')}
+                  </div>
+                  <span class="text-sm font-medium text-slate-500 dark:text-slate-400">By {featuredPost.data.author.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
+                </div>
                 <a href={`/blog/${featuredPost.slug}`} class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold hover:gap-3 transition-all">
                   Read Article →
                 </a>
               </div>
             </div>
-            <div class="bg-gradient-to-br from-slate-100 dark:from-slate-700 to-slate-50 dark:to-slate-800 lg:border-l border-slate-200 dark:border-slate-700 p-8 lg:p-12 flex items-center justify-center">
-              <div class="text-center">
-                <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                  <span class="text-3xl">📄</span>
+            <div class="bg-[#0d1117] lg:border-l border-[#1e293b] p-6 lg:p-8 flex items-center justify-center rounded-r-xl">
+              <div class="text-left w-full">
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="flex gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+                  </div>
+                  <span class="text-[#64748b] text-xs font-mono ml-2">vim_invoice.abap</span>
                 </div>
-                <p class="text-slate-600 dark:text-slate-400 font-medium">{featuredPost.data.category.replace('-', ' ')}</p>
+                <pre class="text-xs font-mono text-[#e2e8f0] leading-relaxed overflow-x-auto"><code><span style="color:#c678dd">DATA</span>: lv_docid <span style="color:#c678dd">TYPE</span> /opt/vim_doc_key.
+
+<span style="color:#c678dd">CALL METHOD</span> /opt/cl_vim_api=><span style="color:#61afef">get_details</span>
+  <span style="color:#d19a66">EXPORTING</span> iv_doc_id = lv_docid
+  <span style="color:#d19a66">IMPORTING</span> es_header = ls_header.
+
+<span style="color:#c678dd">IF</span> ls_header-status = <span style="color:#98c379">'APPROVED'</span>.
+  <span style="color:#7ee787">* Process approved invoice</span>
+<span style="color:#c678dd">ENDIF</span>.</code></pre>
               </div>
             </div>
           </div>

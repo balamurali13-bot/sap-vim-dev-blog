@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
 
-// Get author data - exact slug match
+// Get author data
 const authors = await getCollection('authors');
 const author = authors.find(a => a.slug === post.data.author) || null;
 
@@ -35,49 +35,49 @@ const relatedPosts = allPosts
   .map(r => r.post);
 
 const categoryColors: Record<string, string> = {
-  'abap-snippets': 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
-  'vim-enhancements': 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400',
-  'workflow': 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',
-  'fi-mm': 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
-  'troubleshooting': 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
-  'performance': 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400',
-  'best-practices': 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400',
+  'abap-snippets': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  'vim-enhancements': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+  'workflow': 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+  'fi-mm': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  'troubleshooting': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  'performance': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
+  'best-practices': 'bg-tag-bg text-tag-text dark:bg-dark-tag-bg dark:text-dark-tag-text',
 };
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid lg:grid-cols-4 gap-8">
+  <div class="max-w-[1120px] mx-auto px-6 py-12">
+    <div class="grid lg:grid-cols-4 gap-12">
       
       <!-- Main Content -->
       <article class="lg:col-span-3">
         <!-- Article Header -->
         <header class="mb-8">
           <div class="flex items-center gap-3 mb-4">
-            <span class={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${categoryColors[post.data.category] || 'bg-slate-100 text-slate-700'}`}>
+            <span class={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${categoryColors[post.data.category] || 'bg-tag-bg text-tag-text'}`}>
               {post.data.category.replace('-', ' ')}
             </span>
             {post.data.featured && (
-              <span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-semibold">
+              <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-semibold">
                 ★ Featured
               </span>
             )}
           </div>
           
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
+          <h1 class="text-3xl sm:text-4xl font-bold text-text-primary mb-4 font-serif leading-tight">
             {post.data.title}
           </h1>
           
-          <p class="text-lg text-slate-600 dark:text-slate-300 mb-6">
+          <p class="text-lg text-text-secondary mb-6">
             {post.data.description}
           </p>
           
-          <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <div class="flex items-center gap-4 text-sm text-text-tertiary">
             <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-gradient-end flex items-center justify-center text-white text-sm font-bold">
                 {post.data.author.charAt(0).toUpperCase()}
               </div>
-              <span class="font-medium">{post.data.author}</span>
+              <span class="font-medium text-text-secondary">{post.data.author}</span>
             </div>
             <span>•</span>
             <time>{post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
@@ -85,25 +85,25 @@ const categoryColors: Record<string, string> = {
         </header>
         
         <!-- Article Content -->
-        <div class="prose prose-lg dark:prose-invert max-w-none 
-          prose-headings:scroll-mt-20
-          prose-h2:text-slate-900 dark:prose-h2:text-white
-          prose-h3:text-slate-800 dark:prose-h3:text-white
-          prose-p:text-slate-700 dark:prose-p:text-slate-300
-          prose-a:text-cyan-600 dark:prose-a:text-cyan-400
-          prose-code:text-cyan-600 dark:prose-code:text-cyan-400 prose-code:bg-cyan-50 dark:prose-code:bg-cyan-900/20 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
-          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:border prose-pre:border-slate-700
-          prose-li:text-slate-700 dark:prose-li:text-slate-300
-          prose-blockquote:border-l-cyan-500 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800 prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:rounded-r-lg">
+        <div class="prose prose-lg max-w-none 
+          prose-headings:font-serif prose-headings:font-semibold
+          prose-h2:text-text-primary prose-h2:mt-12 prose-h2:mb-4
+          prose-h3:text-text-primary prose-h3:mt-8 prose-h3:mb-3
+          prose-p:text-text-secondary prose-p:mb-4
+          prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+          prose-code:text-accent prose-code:bg-accent-subtle dark:prose-code:bg-dark-accent-subtle prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm
+          prose-pre:bg-code dark:prose-pre:bg-dark-code prose-pre:rounded-lg prose-pre:shadow-md
+          prose-li:text-text-secondary
+          prose-blockquote:border-l-accent prose-blockquote:bg-secondary dark:prose-blockquote:bg-dark-secondary prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:rounded-r-lg prose-blockquote:not-italic">
           <Content />
         </div>
         
         <!-- Tags -->
         {post.data.tags && post.data.tags.length > 0 && (
-          <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
+          <div class="mt-10 pt-8 border-t border-border">
             <div class="flex flex-wrap gap-2">
               {post.data.tags.map(tag => (
-                <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-sm">
+                <span class="px-3 py-1.5 rounded-lg bg-tag-bg dark:bg-dark-tag-bg text-tag-text dark:text-dark-tag-text text-sm">
                   #{tag}
                 </span>
               ))}
@@ -112,24 +112,24 @@ const categoryColors: Record<string, string> = {
         )}
         
         <!-- Back Link -->
-        <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
-          <a href="/blog" class="inline-flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold hover:gap-3 transition-all">
+        <div class="mt-8 pt-8 border-t border-border">
+          <a href="/blog" class="inline-flex items-center gap-2 text-accent font-medium hover:gap-3 transition-all">
             ← Back to Articles
           </a>
         </div>
       </article>
       
       <!-- Sidebar -->
-      <aside class="lg:col-span-1 space-y-8">
+      <aside class="lg:col-span-1 space-y-6">
         <!-- Table of Contents -->
         {headings.length > 0 && (
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 sticky top-24">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">On this page</h3>
+          <div class="bg-card dark:bg-dark-card rounded-xl border border-border p-5 sticky top-24">
+            <h3 class="font-semibold text-text-primary mb-4">On this page</h3>
             <nav class="space-y-2 text-sm">
               {headings.filter(h => h.depth <= 3).map(heading => (
                 <a 
                   href={`#${heading.slug}`} 
-                  class={`block text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors ${heading.depth === 3 ? 'pl-4' : ''}`}
+                  class={`block text-text-secondary hover:text-accent transition-colors ${heading.depth === 3 ? 'pl-4' : ''}`}
                 >
                   {heading.text}
                 </a>
@@ -139,43 +139,30 @@ const categoryColors: Record<string, string> = {
         )}
         
         <!-- Author Card -->
-        {author ? (
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">About the Author</h3>
-            <div class="flex items-start gap-4">
-              <div class="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+        {author && (
+          <div class="bg-card dark:bg-dark-card rounded-xl border border-border p-5">
+            <h3 class="font-semibold text-text-primary mb-4">About the Author</h3>
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-gradient-end flex items-center justify-center text-white font-bold flex-shrink-0">
                 {author.data.name.charAt(0)}
               </div>
               <div>
-                <h4 class="font-semibold text-slate-900 dark:text-white">{author.data.name}</h4>
-                <p class="text-sm text-cyan-600 dark:text-cyan-400">{author.data.role}</p>
+                <h4 class="font-semibold text-text-primary">{author.data.name}</h4>
+                <p class="text-sm text-accent">{author.data.role}</p>
               </div>
             </div>
-            <p class="mt-4 text-sm text-slate-600 dark:text-slate-400">
+            <p class="mt-4 text-sm text-text-secondary">
               {author.data.bio}
             </p>
             {author.data.expertise && (
               <div class="mt-4 flex flex-wrap gap-2">
                 {author.data.expertise.slice(0, 3).map(skill => (
-                  <span class="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs">
+                  <span class="px-2 py-1 rounded-md bg-tag-bg dark:bg-dark-tag-bg text-tag-text dark:text-dark-tag-text text-xs">
                     {skill}
                   </span>
                 ))}
               </div>
             )}
-          </div>
-        ) : (
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">About the Author</h3>
-            <div class="flex items-center gap-4">
-              <div class="w-14 h-14 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 text-xl font-bold">
-                {post.data.author.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <h4 class="font-semibold text-slate-900 dark:text-white">{post.data.author}</h4>
-                <p class="text-sm text-slate-500">Author</p>
-              </div>
-            </div>
           </div>
         )}
       </aside>
@@ -183,19 +170,19 @@ const categoryColors: Record<string, string> = {
     
     <!-- Related Posts -->
     {relatedPosts.length > 0 && (
-      <section class="mt-16 pt-12 border-t border-slate-200 dark:border-slate-700">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8">Related Articles</h2>
+      <section class="mt-16 pt-12 border-t border-border">
+        <h2 class="text-2xl font-bold text-text-primary mb-8 font-serif">Related Articles</h2>
         <div class="grid md:grid-cols-3 gap-6">
           {relatedPosts.map(related => (
-            <a href={`/blog/${related.slug}`} class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:border-cyan-300 dark:hover:border-cyan-600 transition-all">
+            <a href={`/blog/${related.slug}`} class="group bg-card dark:bg-dark-card rounded-xl border border-border hover:border-accent hover:shadow-md transition-all">
               <div class="p-5">
-                <span class={`inline-block px-2 py-1 rounded-md text-xs font-medium mb-3 ${categoryColors[related.data.category] || 'bg-slate-100 text-slate-600'}`}>
+                <span class={`inline-block px-2 py-1 rounded-md text-xs font-medium mb-3 ${categoryColors[related.data.category] || 'bg-tag-bg text-tag-text'}`}>
                   {related.data.category.replace('-', ' ')}
                 </span>
-                <h3 class="font-semibold text-slate-900 dark:text-white mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2">
+                <h3 class="font-semibold text-text-primary mb-2 group-hover:text-accent transition-colors line-clamp-2">
                   {related.data.title}
                 </h3>
-                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
+                <p class="text-sm text-text-secondary line-clamp-2">
                   {related.data.description}
                 </p>
               </div>

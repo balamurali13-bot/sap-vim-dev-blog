@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "telegram_id": "6258483619",
+      "role": "admin",
+      "name": "Balamurali"
+    },
+    {
+      "telegram_id": "8503374782",
+      "role": "publisher",
+      "name": "Sneha"
+    }
+  ],
+  "roles": {
+    "author": {
+      "can_create_draft": true,
+      "can_publish": false,
+      "allowed_commands": [
+        "newpost",
+        "snippet",
+        "listauthors",
+        "listcategories",
+        "myrole",
+        "help"
+      ]
+    },
+    "publisher": {
+      "can_create_draft": true,
+      "can_publish": true,
+      "allowed_commands": [
+        "newpost",
+        "snippet",
+        "listauthors",
+        "listcategories",
+        "myrole",
+        "help"
+      ]
+    },
+    "admin": {
+      "can_create_draft": true,
+      "can_publish": true,
+      "allowed_commands": [
+        "newpost",
+        "snippet",
+        "listauthors",
+        "listcategories",
+        "myrole",
+        "help",
+        "status",
+        "logs"
+      ]
+    }
+  }
+}
